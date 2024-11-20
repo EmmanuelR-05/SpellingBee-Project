@@ -1,0 +1,63 @@
+def is_valid_word(word, letters, required_letter, used_words):
+  if word == "END":
+    return True
+  if len(word) < 4:
+    print("Your word must be at least 4 letters long")
+    return False
+  if required_letter not in word:
+    print(f"Your word must contain the letter {required_letter}")
+    return False
+  for i in word:
+    if i not in letters:
+      print(f"{i} is not a letter you can use. The only letters you can use are {letters}")
+      return False
+  if word in used_words:
+    print("Already used")
+    return False
+  return True
+
+def get_word(letters, required_letter, used_words):
+  while True:
+    word = input("Enter your word: ")
+    if is_valid_word(word, letters, required_letter, used_words):
+      used_words.append(word)
+      return word
+    else:
+      continue
+
+def is_pangram(guess, letters):
+  for i in letters:
+    if i not in guess:
+      is_true = False
+      return False
+    else:
+      is_true = True
+  if is_true == True:
+    return True
+
+def get_point_value(word,letters):
+  points = len(word)
+  if is_pangram(word, letters) == True:
+    print(f"{word} - Pangram!")
+    points += 7
+  else:
+    print(word)
+  return points               
+
+def spelling_bee():
+  used_words = []
+  letters = input("Welcome to Spelling Bee! Enter your 7 letters, separated by commas:")
+  letters = letters.split(",")
+  required_letter = input(f"Which of these 7 letters {letters} will be your required letter?")
+  while required_letter not in letters:
+   print(f"{required_letter} is not an available letter. Please choose from the following: {letters}")
+   required_letter = input(f"Which of these 7 letters {letters} will be your required letter?")
+  total_points = 0  
+  while True:
+    word = get_word(letters, required_letter, used_words)
+    if word == "END":
+     break
+    points = get_point_value(word, letters)
+    total_points += points 
+  print(f"Your final score is {total_points}")
+spelling_bee()
